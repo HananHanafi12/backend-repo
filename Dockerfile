@@ -7,11 +7,11 @@ WORKDIR /var/www/html
 # Menyalin file composer.json dan composer.lock
 COPY composer.json composer.lock ./
 
-# Menginstall Composer
+# Menginstall Composer dan dependensi yang diperlukan
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip && \
-    docker-php-ext-install zip && \
-    docker-php-ext-enable zip && \
+    libzip-dev zip unzip \
+    default-mysql-client && \
+    docker-php-ext-install pdo pdo_mysql zip && \
     curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
     composer install --no-dev --no-scripts --no-autoloader
